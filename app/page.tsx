@@ -11,6 +11,9 @@ export default function Home() {
     liderazgo: '',
     requerimientos: '',
     obstaculoAula: '',
+    comparativaAsesores: '',
+    loQueMasGusto: '',
+    recomendacion: '',
     mensajeInstitucion: ''
   });
 
@@ -20,7 +23,7 @@ export default function Home() {
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     const { name, value, type } = e.target;
     if (type === 'radio') {
-      setFormData(prev => ({ ...prev, [name]: parseInt(value) || value }));
+      setFormData(prev => ({ ...prev, [name]: value }));
     } else {
       setFormData(prev => ({ ...prev, [name]: value }));
     }
@@ -31,8 +34,17 @@ export default function Home() {
     setEnviando(true);
     setExito(false);
 
-    if (formData.ritmoAprendizaje === 0 || formData.brechaAndamiaje === 0 || formData.criteriosDecreto1290 === 0 || !formData.liderazgo || !formData.requerimientos) {
-      alert('Por favor, responde todas las preguntas obligatorias (Bloque 1 y Bloque 2).');
+    // Validaciones obligatorias
+    if (
+      formData.ritmoAprendizaje === 0 ||
+      formData.brechaAndamiaje === 0 ||
+      formData.criteriosDecreto1290 === 0 ||
+      !formData.liderazgo ||
+      !formData.requerimientos ||
+      !formData.comparativaAsesores ||
+      !formData.recomendacion
+    ) {
+      alert('Por favor, responde todas las preguntas obligatorias (Bloque 1, Bloque 2 y las preguntas 7 y 9 del Bloque 3).');
       setEnviando(false);
       return;
     }
@@ -54,6 +66,9 @@ export default function Home() {
           liderazgo: '',
           requerimientos: '',
           obstaculoAula: '',
+          comparativaAsesores: '',
+          loQueMasGusto: '',
+          recomendacion: '',
           mensajeInstitucion: ''
         });
         const form = document.getElementById('survey-form') as HTMLFormElement;
@@ -85,7 +100,7 @@ export default function Home() {
 
         <form id="survey-form" onSubmit={handleSubmit} className="space-y-8">
 
-          {/* BLOQUE 1 */}
+          {/* BLOQUE 1 (sin cambios) */}
           <div className="space-y-4 border-b pb-6 border-gray-200">
             <h2 className="text-xl font-semibold text-gray-800">Bloque 1: La Realidad de la Progresión Cognitiva en el Aula</h2>
             <p className="text-sm text-gray-500">Escala: 1 = Totalmente en desacuerdo | 5 = Totalmente de acuerdo</p>
@@ -133,7 +148,7 @@ export default function Home() {
             </div>
           </div>
 
-          {/* BLOQUE 2 */}
+          {/* BLOQUE 2 (sin cambios) */}
           <div className="space-y-4 border-b pb-6 border-gray-200">
             <h2 className="text-xl font-semibold text-gray-800">Bloque 2: La Realidad del Acompañamiento Directivo y la Gobernanza</h2>
 
@@ -173,7 +188,7 @@ export default function Home() {
             </div>
           </div>
 
-          {/* BLOQUE 3 */}
+          {/* BLOQUE 3 (actualizado con nuevas preguntas) */}
           <div className="space-y-4">
             <h2 className="text-xl font-semibold text-gray-800">Bloque 3: La Voz Directa de la Realidad Institucional</h2>
 
@@ -181,21 +196,84 @@ export default function Home() {
               <label className="block text-sm font-medium text-gray-700 text-justify">
                 <strong>6. La Realidad del Aula:</strong> ¿Cuál es el principal obstáculo o dificultad real que usted experimenta hoy en el aula al intentar pasar de la enseñanza tradicional por contenidos a la evaluación basada en evidencias (DCE)?
               </label>
-              <textarea name="obstaculoAula" rows={3} onChange={handleChange} className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500" placeholder="Escribe aquí..."></textarea>
+              <textarea
+                name="obstaculoAula"
+                rows={3}
+                onChange={handleChange}
+                className="mt-1 w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 text-sm p-2 border"
+                placeholder="Escribe aquí tu experiencia..."
+              />
             </div>
 
             <div>
               <label className="block text-sm font-medium text-gray-700 text-justify">
-                <strong>7. Mensaje a la Institución:</strong> Desde su experiencia en el aula, ¿qué ajuste urgente debe hacer la institución en el ritmo y la forma para que el proceso de aprendizaje docente se vea fortalecido?
+                <strong>7. Comparativa de Impacto:</strong> ¿Había recibido anteriormente en la institución (o con otros asesores) capacitaciones con este nivel de detalle, rigor técnico y herramientas de analítica (como la app de Bloom y la matriz DCE)?
               </label>
-              <textarea name="mensajeInstitucion" rows={3} onChange={handleChange} className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500" placeholder="Escribe aquí..."></textarea>
+              <div className="mt-2 space-y-1">
+                {[
+                  'No, es la primera vez que se aborda con este nivel de profundidad, rigor y herramientas prácticas.',
+                  'Había recibido capacitaciones similares, pero con menor detalle técnico y sin herramientas de analítica.',
+                  'Sí, anteriormente ya habíamos trabajado con este mismo enfoque y nivel de profundidad.'
+                ].map(texto => (
+                  <label key={texto} className="flex items-start gap-2 cursor-pointer text-sm text-gray-700 text-justify">
+                    <input type="radio" name="comparativaAsesores" value={texto} onChange={handleChange} className="mt-1 h-4 w-4 text-blue-700 flex-shrink-0" />
+                    <span>{texto}</span>
+                  </label>
+                ))}
+              </div>
+            </div>
+
+            <div>
+              <label className="block text-sm font-medium text-gray-700 text-justify">
+                <strong>8. Valoración Cualitativa:</strong> ¿Qué fue lo que más le gustó o resalta del trabajo realizado en estas jornadas de capacitación?
+              </label>
+              <textarea
+                name="loQueMasGusto"
+                rows={3}
+                onChange={handleChange}
+                className="mt-1 w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 text-sm p-2 border"
+                placeholder="Escribe lo que más destacó del taller..."
+              />
+            </div>
+
+            <div>
+              <label className="block text-sm font-medium text-gray-700 text-justify">
+                <strong>9. Recomendación Profesional:</strong> ¿Recomendaría este tipo de acompañamiento y capacitación técnica a docentes y colegas de otras instituciones educativas?
+              </label>
+              <div className="mt-2 space-y-1">
+                {['Totalmente recomendado', 'Recomendado con reservas', 'No lo recomendaría'].map(texto => (
+                  <label key={texto} className="flex items-start gap-2 cursor-pointer text-sm text-gray-700 text-justify">
+                    <input type="radio" name="recomendacion" value={texto} onChange={handleChange} className="mt-1 h-4 w-4 text-blue-700 flex-shrink-0" />
+                    <span>{texto}</span>
+                  </label>
+                ))}
+              </div>
+            </div>
+
+            <div>
+              <label className="block text-sm font-medium text-gray-700 text-justify">
+                <strong>10. Mensaje a la Institución:</strong> Desde su experiencia en el aula, ¿qué ajuste urgente debe hacer la institución en el ritmo y la forma para que el proceso de aprendizaje docente se vea fortalecido?
+              </label>
+              <textarea
+                name="mensajeInstitucion"
+                rows={3}
+                onChange={handleChange}
+                className="mt-1 w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 text-sm p-2 border"
+                placeholder="Escribe tu sugerencia institucional..."
+              />
             </div>
 
             <div>
               <label className="block text-sm font-medium text-gray-700">
                 <strong>Nombre (opcional):</strong>
               </label>
-              <input type="text" name="nombre" onChange={handleChange} className="w-full px-4 py-2 border border-gray-300 rounded-lg" placeholder="Si prefieres el anonimato, déjalo en blanco." />
+              <input
+                type="text"
+                name="nombre"
+                onChange={handleChange}
+                className="mt-1 w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 text-sm p-2 border"
+                placeholder="Si prefieres el anonimato, déjalo en blanco."
+              />
             </div>
           </div>
 
