@@ -40,7 +40,6 @@ export default function Home() {
     setEnviando(true);
     setExito(false);
 
-    // Validaciones básicas
     if (formData.claridad === 0 || formData.pertinencia === 0 || formData.rigurosidad === 0 || !formData.modalidad) {
       alert('Por favor, responde todas las preguntas obligatorias (Bloque 1 y Modalidad).');
       setEnviando(false);
@@ -82,7 +81,6 @@ export default function Home() {
     <div className="min-h-screen bg-gray-50 flex items-center justify-center p-6">
       <div className="max-w-3xl w-full bg-white shadow-xl rounded-2xl p-8 border border-gray-200">
         
-        {/* Encabezado */}
         <div className="text-center mb-8">
           <div className="h-16 w-16 bg-blue-700 rounded-full mx-auto flex items-center justify-center text-white text-2xl font-bold">
             FE
@@ -95,7 +93,7 @@ export default function Home() {
 
         <form id="survey-form" onSubmit={handleSubmit} className="space-y-8">
 
-          {/* BLOQUE 1: Valoración Técnica */}
+          {/* Bloque 1 */}
           <div className="space-y-4 border-b pb-6 border-gray-200">
             <h2 className="text-xl font-semibold text-gray-800">Bloque 1: Valoración Técnica del Acompañamiento</h2>
             <p className="text-sm text-gray-500">Escala: 1 = Totalmente en desacuerdo | 5 = Totalmente de acuerdo</p>
@@ -137,7 +135,7 @@ export default function Home() {
             </div>
           </div>
 
-          {/* BLOQUE 2: Necesidades de Profundización */}
+          {/* Bloque 2 */}
           <div className="space-y-4 border-b pb-6 border-gray-200">
             <h2 className="text-xl font-semibold text-gray-800">Bloque 2: Necesidades de Profundización y Gobernanza Curricular</h2>
             
@@ -166,7 +164,7 @@ export default function Home() {
             </div>
           </div>
 
-          {/* BLOQUE 3: Cualitativo */}
+          {/* Bloque 3 */}
           <div className="space-y-4">
             <h2 className="text-xl font-semibold text-gray-800">Bloque 3: Voz Directa del Docente</h2>
             
