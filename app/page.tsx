@@ -128,34 +128,45 @@ export default function Home() {
             </div>
           </div>
 
-          {/* BLOQUE 2 */}
-          <div className="space-y-4 border-b pb-6 border-gray-200">
-            <h2 className="text-xl font-semibold text-gray-800">Bloque 2: La Realidad del Acompañamiento Directivo y la Gobernanza</h2>
+        {/* BLOQUE 2 */}
+<div className="space-y-4 border-b pb-6 border-gray-200">
+  <h2 className="text-xl font-semibold text-gray-800">Bloque 2: La Realidad del Acompañamiento Directivo y la Gobernanza</h2>
 
-            <div>
-              <label className="block text-sm font-medium text-gray-700">4. Tipo de Liderazgo Requerido: Para que el proceso de reestructuración curricular no se quede en un trámite administrativo, las diferentes Coordinaciones de la institución deben enfocar su rol en:</label>
-              <div className="mt-2 space-y-1">
-                {['Opción A: El control formal de procesos, fechas de entrega, norma y seguimiento académico (Gestión Académica Estructural).', 'Opción B: El diseño didáctico, el modelamiento pedagógico en aula y el acompañamiento en la matriz DCE (Gestión Pedagógica) con fechas de entrega, norma y seguimiento.'].map(texto => (
-                  <label key={texto} className="flex items-center gap-2">
-                    <input type="radio" name="liderazgo" value={texto} onChange={handleChange} className="h-4 w-4 text-blue-700" />
-                    <span className="text-sm">{texto}</span>
-                  </label>
-                ))}
-              </div>
-            </div>
+  <div>
+    <label className="block text-sm font-medium text-gray-700">
+      4. Tipo de Liderazgo Requerido: Para que el proceso de reestructuración curricular no se quede en un trámite administrativo, las diferentes Coordinaciones de la institución deben enfocar su rol en:
+    </label>
+    <div className="mt-2 space-y-1">
+      {[
+        'Opción A: El control formal de procesos, fechas de entrega, norma y seguimiento académico (Gestión Académica Estructural).',
+        'Opción B: El diseño didáctico, el modelamiento pedagógico en aula y el acompañamiento en la matriz DCE (Gestión Pedagógica) con fechas de entrega, norma y seguimiento.'
+      ].map(texto => (
+        <label key={texto} className="flex items-center gap-2">
+          <input type="radio" name="liderazgo" value={texto} onChange={handleChange} className="h-4 w-4 text-blue-700" />
+          <span className="text-sm">{texto}</span>
+        </label>
+      ))}
+    </div>
+  </div>
 
-            <div>
-              <label className="block text-sm font-medium text-gray-700">5. Requerimientos Institucionales: Frente a las exigencias de entregar planeaciones de aula y mallas reestructuradas bajo la metodología DCE, mi percepción es que:</label>
-              <div className="mt-2 space-y-1">
-                {['Se requiere un programa de acompañamiento y consultoría permanente que comprenda la curva de aprendizaje real del equipo.', 'Se corre el riesgo de diligenciar formatos de forma algorítmica sin que exista una verdadera aprehensión pedagógica en el aula.', 'El cuerpo docente puede asumir el rediseño de mallas de manera autónoma sin necesidad de asesoría técnica externa.'].map(texto => (
-                  <label key={texto} className="flex items-center gap-2">
-                    <input type="radio" name="requerimientos" value={texto} onChange={handleChange} className="h-4 w-4 text-blue-700" />
-                    <span className="text-sm">{texto}</span>
-                  </label>
-                ))}
-              </div>
-            </div>
-          </div>
+  <div>
+    <label className="block text-sm font-medium text-gray-700">
+      5. Requerimientos Institucionales: Frente a las exigencias de entregar planeaciones de aula y mallas reestructuradas bajo la metodología DCE, mi percepción es que:
+    </label>
+    <div className="mt-2 space-y-1">
+      {[
+        'Se requiere un programa de acompañamiento y consultoría permanente que comprenda la curva de aprendizaje real del equipo, evitando así el riesgo de diligenciar formatos de forma algorítmica sin una verdadera aprehensión pedagógica en el aula.',
+        'Se puede continuar con la entrega intensiva de formatos, asumiendo el riesgo de que el diligenciamiento sea puramente administrativo.',
+        'El cuerpo docente puede asumir el rediseño de mallas de manera autónoma sin necesidad de asesoría técnica externa.'
+      ].map(texto => (
+        <label key={texto} className="flex items-start gap-2 cursor-pointer">
+          <input type="radio" name="requerimientos" value={texto} onChange={handleChange} className="mt-1 h-4 w-4 text-blue-700" />
+          <span className="text-sm">{texto}</span>
+        </label>
+      ))}
+    </div>
+  </div>
+</div>
 
           {/* BLOQUE 3 */}
           <div className="space-y-4">
