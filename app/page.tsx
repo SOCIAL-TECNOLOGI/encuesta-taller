@@ -31,7 +31,6 @@ export default function Home() {
     setEnviando(true);
     setExito(false);
 
-    // Validaciones obligatorias
     if (formData.ritmoAprendizaje === 0 || formData.brechaAndamiaje === 0 || formData.criteriosDecreto1290 === 0 || !formData.liderazgo || !formData.requerimientos) {
       alert('Por favor, responde todas las preguntas obligatorias (Bloque 1 y Bloque 2).');
       setEnviando(false);
@@ -92,7 +91,9 @@ export default function Home() {
             <p className="text-sm text-gray-500">Escala: 1 = Totalmente en desacuerdo | 5 = Totalmente de acuerdo</p>
 
             <div>
-              <label className="block text-sm font-medium text-gray-700">1. Ritmo Real de Aprendizaje: Considero que para lograr una transformación real en la evaluación por competencias (DCE), el cuerpo docente necesita consolidar primero los niveles de comprensión y aplicación (N2/N3 de Bloom) antes de pasar al diseño definitivo de instrumentos de alta complejidad (N5/N6) equivalentes a N3/N4 según el SIEE.</label>
+              <label className="block text-sm font-medium text-gray-700 text-justify">
+                <strong>1. Ritmo Real de Aprendizaje:</strong> Considero que para lograr una transformación real en la evaluación por competencias (DCE), el cuerpo docente necesita consolidar primero los niveles de comprensión y aplicación (N2/N3 de Bloom) antes de pasar al diseño definitivo de instrumentos de alta complejidad (N5/N6) equivalentes a N3/N4 según el SIEE.
+              </label>
               <div className="flex gap-4 mt-2 flex-wrap">
                 {[1,2,3,4,5].map(num => (
                   <label key={`r-${num}`} className="flex items-center gap-1">
@@ -104,7 +105,9 @@ export default function Home() {
             </div>
 
             <div>
-              <label className="block text-sm font-medium text-gray-700">2. Brecha de Andamiaje: Intentar pasar de manera inmediata de actividades de identificación/descripción al diseño y elaboración de pruebas complejas, sin un acompañamiento intermedio, genera sobrecarga y riesgo de adopción superficial de la norma (llenar formatos por cumplir).</label>
+              <label className="block text-sm font-medium text-gray-700 text-justify">
+                <strong>2. Brecha de Andamiaje:</strong> Intentar pasar de manera inmediata de actividades de identificación/descripción al diseño y elaboración de pruebas complejas, sin un acompañamiento intermedio, genera sobrecarga y riesgo de adopción superficial de la norma (llenar formatos por cumplir).
+              </label>
               <div className="flex gap-4 mt-2 flex-wrap">
                 {[1,2,3,4,5].map(num => (
                   <label key={`b-${num}`} className="flex items-center gap-1">
@@ -116,7 +119,9 @@ export default function Home() {
             </div>
 
             <div>
-              <label className="block text-sm font-medium text-gray-700">3. Criterios del Decreto 1290: Para determinar con rigor cuándo un estudiante aprueba o reprueba legalmente en el Nivel Básico (Decreto 1290), requiero mayor profundización técnica en la definición de evidencias de aprendizaje.</label>
+              <label className="block text-sm font-medium text-gray-700 text-justify">
+                <strong>3. Criterios del Decreto 1290:</strong> Para determinar con rigor cuándo un estudiante aprueba o reprueba legalmente en el Nivel Básico (Decreto 1290), requiero mayor profundización técnica en la definición de evidencias de aprendizaje.
+              </label>
               <div className="flex gap-4 mt-2 flex-wrap">
                 {[1,2,3,4,5].map(num => (
                   <label key={`d-${num}`} className="flex items-center gap-1">
@@ -128,62 +133,68 @@ export default function Home() {
             </div>
           </div>
 
-        {/* BLOQUE 2 */}
-<div className="space-y-4 border-b pb-6 border-gray-200">
-  <h2 className="text-xl font-semibold text-gray-800">Bloque 2: La Realidad del Acompañamiento Directivo y la Gobernanza</h2>
+          {/* BLOQUE 2 */}
+          <div className="space-y-4 border-b pb-6 border-gray-200">
+            <h2 className="text-xl font-semibold text-gray-800">Bloque 2: La Realidad del Acompañamiento Directivo y la Gobernanza</h2>
 
-  <div>
-    <label className="block text-sm font-medium text-gray-700">
-      4. Tipo de Liderazgo Requerido: Para que el proceso de reestructuración curricular no se quede en un trámite administrativo, las diferentes Coordinaciones de la institución deben enfocar su rol en:
-    </label>
-    <div className="mt-2 space-y-1">
-      {[
-        'Opción A: El control formal de procesos, fechas de entrega, norma y seguimiento académico (Gestión Académica Estructural).',
-        'Opción B: El diseño didáctico, el modelamiento pedagógico en aula y el acompañamiento en la matriz DCE (Gestión Pedagógica) con fechas de entrega, norma y seguimiento.'
-      ].map(texto => (
-        <label key={texto} className="flex items-center gap-2">
-          <input type="radio" name="liderazgo" value={texto} onChange={handleChange} className="h-4 w-4 text-blue-700" />
-          <span className="text-sm">{texto}</span>
-        </label>
-      ))}
-    </div>
-  </div>
+            <div>
+              <label className="block text-sm font-medium text-gray-700 text-justify">
+                <strong>4. Tipo de Liderazgo Requerido:</strong> Para que el proceso de reestructuración curricular no se quede en un trámite administrativo, las diferentes Coordinaciones de la institución deben enfocar su rol en:
+              </label>
+              <div className="mt-2 space-y-1">
+                {[
+                  'Opción A: El control formal de procesos, fechas de entrega, norma y seguimiento académico (Gestión Académica Estructural).',
+                  'Opción B: El diseño didáctico, el modelamiento pedagógico en aula y el acompañamiento en la matriz DCE (Gestión Pedagógica) con fechas de entrega, norma y seguimiento.'
+                ].map(texto => (
+                  <label key={texto} className="flex items-start gap-2 cursor-pointer text-sm text-gray-700 text-justify">
+                    <input type="radio" name="liderazgo" value={texto} onChange={handleChange} className="mt-1 h-4 w-4 text-blue-700 flex-shrink-0" />
+                    <span dangerouslySetInnerHTML={{ __html: texto.replace(/^(Opción [A-B]:)/, '<strong>$1</strong>') }} />
+                  </label>
+                ))}
+              </div>
+            </div>
 
-  <div>
-    <label className="block text-sm font-medium text-gray-700">
-      5. Requerimientos Institucionales: Frente a las exigencias de entregar planeaciones de aula y mallas reestructuradas bajo la metodología DCE, mi percepción es que:
-    </label>
-    <div className="mt-2 space-y-1">
-      {[
-        'Se requiere un programa de acompañamiento y consultoría permanente que comprenda la curva de aprendizaje real del equipo, evitando así el riesgo de diligenciar formatos de forma algorítmica sin una verdadera aprehensión pedagógica en el aula.',
-        'Se puede continuar con la entrega intensiva de formatos, asumiendo el riesgo de que el diligenciamiento sea puramente administrativo.',
-        'El cuerpo docente puede asumir el rediseño de mallas de manera autónoma sin necesidad de asesoría técnica externa.'
-      ].map(texto => (
-        <label key={texto} className="flex items-start gap-2 cursor-pointer">
-          <input type="radio" name="requerimientos" value={texto} onChange={handleChange} className="mt-1 h-4 w-4 text-blue-700" />
-          <span className="text-sm">{texto}</span>
-        </label>
-      ))}
-    </div>
-  </div>
-</div>
+            <div>
+              <label className="block text-sm font-medium text-gray-700 text-justify">
+                <strong>5. Requerimientos Institucionales:</strong> Frente a las exigencias de entregar planeaciones de aula y mallas reestructuradas bajo la metodología DCE, mi percepción es que:
+              </label>
+              <div className="mt-2 space-y-1">
+                {[
+                  'Se requiere un programa de acompañamiento y consultoría permanente que comprenda la curva de aprendizaje real del equipo, evitando así el riesgo de diligenciar formatos de forma algorítmica sin una verdadera aprehensión pedagógica en el aula.',
+                  'Se puede continuar con la entrega intensiva de formatos, asumiendo el riesgo de que el diligenciamiento sea puramente administrativo.',
+                  'El cuerpo docente puede asumir el rediseño de mallas de manera autónoma sin necesidad de asesoría técnica externa.'
+                ].map(texto => (
+                  <label key={texto} className="flex items-start gap-2 cursor-pointer text-sm text-gray-700 text-justify">
+                    <input type="radio" name="requerimientos" value={texto} onChange={handleChange} className="mt-1 h-4 w-4 text-blue-700 flex-shrink-0" />
+                    <span>{texto}</span>
+                  </label>
+                ))}
+              </div>
+            </div>
+          </div>
 
           {/* BLOQUE 3 */}
           <div className="space-y-4">
             <h2 className="text-xl font-semibold text-gray-800">Bloque 3: La Voz Directa de la Realidad Institucional</h2>
 
             <div>
-              <label className="block text-sm font-medium text-gray-700">6. La Realidad del Aula: ¿Cuál es el principal obstáculo o dificultad real que usted experimenta hoy en el aula al intentar pasar de la enseñanza tradicional por contenidos a la evaluación basada en evidencias (DCE)?</label>
+              <label className="block text-sm font-medium text-gray-700 text-justify">
+                <strong>6. La Realidad del Aula:</strong> ¿Cuál es el principal obstáculo o dificultad real que usted experimenta hoy en el aula al intentar pasar de la enseñanza tradicional por contenidos a la evaluación basada en evidencias (DCE)?
+              </label>
               <textarea name="obstaculoAula" rows={3} onChange={handleChange} className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500" placeholder="Escribe aquí..."></textarea>
             </div>
 
             <div>
-              <label className="block text-sm font-medium text-gray-700">7. Mensaje a la Institución: Desde su experiencia en el aula, ¿qué ajuste urgente debe hacer la institución en el ritmo y la forma para que el proceso de aprendizaje docente se vea fortalecido?</label>
+              <label className="block text-sm font-medium text-gray-700 text-justify">
+                <strong>7. Mensaje a la Institución:</strong> Desde su experiencia en el aula, ¿qué ajuste urgente debe hacer la institución en el ritmo y la forma para que el proceso de aprendizaje docente se vea fortalecido?
+              </label>
               <textarea name="mensajeInstitucion" rows={3} onChange={handleChange} className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500" placeholder="Escribe aquí..."></textarea>
             </div>
 
             <div>
-              <label className="block text-sm font-medium text-gray-700">Nombre (opcional):</label>
+              <label className="block text-sm font-medium text-gray-700">
+                <strong>Nombre (opcional):</strong>
+              </label>
               <input type="text" name="nombre" onChange={handleChange} className="w-full px-4 py-2 border border-gray-300 rounded-lg" placeholder="Si prefieres el anonimato, déjalo en blanco." />
             </div>
           </div>
