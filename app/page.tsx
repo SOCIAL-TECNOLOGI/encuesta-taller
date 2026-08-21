@@ -241,7 +241,7 @@ export default function Home() {
                 <strong>9. Recomendación Profesional:</strong> ¿Recomendaría este tipo de acompañamiento y capacitación técnica a docentes y colegas de otras instituciones educativas?
               </label>
               <div className="mt-2 space-y-1">
-                {['Totalmente recomendado', 'Recomendado con reservas', 'No lo recomendaría'].map(texto => (
+                {['Totalmente recomendado', 'Recomendado', 'No lo recomendaría'].map(texto => (
                   <label key={texto} className="flex items-start gap-2 cursor-pointer text-sm text-gray-700 text-justify">
                     <input type="radio" name="recomendacion" value={texto} onChange={handleChange} className="mt-1 h-4 w-4 text-blue-700 flex-shrink-0" />
                     <span>{texto}</span>

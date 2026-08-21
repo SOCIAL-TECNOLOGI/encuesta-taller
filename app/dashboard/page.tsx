@@ -12,9 +12,9 @@ const COLORS = ['#0088FE', '#00C49F', '#FFBB28', '#FF8042', '#A28BFF', '#FF6B6B'
 interface Respuesta {
   id: string;
   nombre?: string;
-  ritmoAprendizaje: number;
-  brechaAndamiaje: number;
-  criteriosDecreto1290: number;
+  ritmoAprendizaje: number | string;
+  brechaAndamiaje: number | string;
+  criteriosDecreto1290: number | string;
   liderazgo: string;
   requerimientos: string;
   obstaculoAula: string;
@@ -23,6 +23,12 @@ interface Respuesta {
   recomendacion: string;
   mensajeInstitucion: string;
   fecha: string;
+}
+
+// ✅ Acorta un texto largo para mostrarlo en ejes/tooltips de gráficos,
+// conservando el texto completo aparte para cuando sí se necesite.
+function acortar(texto: string, max = 45) {
+  return texto.length > max ? texto.slice(0, max) + '…' : texto;
 }
 
 export default function Dashboard() {
@@ -51,19 +57,28 @@ export default function Dashboard() {
   if (error) return <div className="p-8 text-center text-red-600">Error: {error}</div>;
   if (data.length === 0) return <div className="p-8 text-center text-gray-600">No hay respuestas aún.</div>;
 
+  // ✅ CORREGIDO: conteo() ahora acorta los nombres largos para mostrar
+  // en gráficos, y conserva el texto completo en un campo aparte.
   const conteo = (campo: keyof Respuesta) => {
     const counts: Record<string, number> = {};
     data.forEach(item => {
       const val = String(item[campo] || '');
       counts[val] = (counts[val] || 0) + 1;
     });
-    return Object.keys(counts).map(key => ({ name: key, value: counts[key] }));
+    return Object.keys(counts).map(key => ({
+      name: acortar(key),
+      fullName: key,
+      value: counts[key]
+    }));
   };
 
+  // ✅ CORREGIDO: Number(...) fuerza la conversión antes de sumar —
+  // sin esto, JavaScript concatena texto en vez de sumar números,
+  // produciendo promedios sin sentido.
   const promedios = [
-    { name: 'Ritmo Aprendizaje', value: data.reduce((acc, d) => acc + d.ritmoAprendizaje, 0) / data.length },
-    { name: 'Brecha Andamiaje', value: data.reduce((acc, d) => acc + d.brechaAndamiaje, 0) / data.length },
-    { name: 'Criterios Decreto 1290', value: data.reduce((acc, d) => acc + d.criteriosDecreto1290, 0) / data.length },
+    { name: 'Ritmo Aprendizaje', value: data.reduce((acc, d) => acc + Number(d.ritmoAprendizaje || 0), 0) / data.length },
+    { name: 'Brecha Andamiaje', value: data.reduce((acc, d) => acc + Number(d.brechaAndamiaje || 0), 0) / data.length },
+    { name: 'Criterios Decreto 1290', value: data.reduce((acc, d) => acc + Number(d.criteriosDecreto1290 || 0), 0) / data.length },
   ];
 
   const liderazgoData = conteo('liderazgo');
@@ -71,9 +86,6 @@ export default function Dashboard() {
   const comparativaData = conteo('comparativaAsesores');
   const recomendacionData = conteo('recomendacion');
 
-  // ✅ Agrupa las respuestas por día real, sumando cuántas llegaron
-  // cada fecha — antes cada respuesta se marcaba como "1" suelto,
-  // sin agrupar, dando una línea plana sin sentido.
   const conteoPorFecha: Record<string, number> = {};
   data.forEach(d => {
     const dia = format(new Date(d.fecha), 'dd/MM');
@@ -87,6 +99,20 @@ export default function Dashboard() {
     })
     .map(fecha => ({ fecha, count: conteoPorFecha[fecha] }));
 
+  // ✅ NUEVO: tooltip personalizado que muestra el texto completo,
+  // pero con salto de línea automático (evita que se desborde
+  // horizontalmente como en la captura).
+  const TooltipCompleto = ({ active, payload }: any) => {
+    if (!active || !payload || !payload.length) return null;
+    const item = payload[0].payload;
+    return (
+      <div className="bg-white border border-gray-200 rounded-lg shadow-lg p-3 max-w-xs text-sm">
+        <p className="text-gray-700 whitespace-normal break-words">{item.fullName || item.name}</p>
+        <p className="text-blue-600 font-semibold mt-1">Respuestas: {item.value}</p>
+      </div>
+    );
+  };
+
   return (
     <div className="min-h-screen bg-gray-50 p-6">
       <div className="max-w-7xl mx-auto">
@@ -94,7 +120,7 @@ export default function Dashboard() {
         <p className="text-gray-500 mb-6">Total de respuestas: <span className="font-semibold">{data.length}</span></p>
 
         <div className="bg-white rounded-xl shadow p-6 mb-6">
-          <h2 className="text-xl font-semibold mb-4">Bloque 1: Promedio de escalas Likert</h2>
+          <h2 className="text-xl font-semibold mb-4">Bloque 1: Promedio de escalas Likert (1-5)</h2>
           <ResponsiveContainer width="100%" height={300}>
             <BarChart data={promedios}>
               <CartesianGrid strokeDasharray="3 3" />
@@ -117,19 +143,19 @@ export default function Dashboard() {
                     <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
                   ))}
                 </Pie>
-                <Tooltip />
+                <Tooltip content={<TooltipCompleto />} />
               </PieChart>
             </ResponsiveContainer>
           </div>
 
           <div className="bg-white rounded-xl shadow p-6">
             <h2 className="text-xl font-semibold mb-4">5. Requerimientos Institucionales</h2>
-            <ResponsiveContainer width="100%" height={250}>
-              <BarChart data={requerimientosData} layout="vertical">
+            <ResponsiveContainer width="100%" height={280}>
+              <BarChart data={requerimientosData} layout="vertical" margin={{ left: 10 }}>
                 <CartesianGrid strokeDasharray="3 3" />
-                <XAxis type="number" />
-                <YAxis dataKey="name" type="category" width={150} />
-                <Tooltip />
+                <XAxis type="number" allowDecimals={false} />
+                <YAxis dataKey="name" type="category" width={140} tick={{ fontSize: 11 }} />
+                <Tooltip content={<TooltipCompleto />} />
                 <Bar dataKey="value" fill="#00C49F" />
               </BarChart>
             </ResponsiveContainer>
@@ -146,7 +172,7 @@ export default function Dashboard() {
                     <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
                   ))}
                 </Pie>
-                <Tooltip />
+                <Tooltip content={<TooltipCompleto />} />
               </PieChart>
             </ResponsiveContainer>
           </div>
@@ -160,7 +186,7 @@ export default function Dashboard() {
                     <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
                   ))}
                 </Pie>
-                <Tooltip />
+                <Tooltip content={<TooltipCompleto />} />
               </PieChart>
             </ResponsiveContainer>
           </div>
