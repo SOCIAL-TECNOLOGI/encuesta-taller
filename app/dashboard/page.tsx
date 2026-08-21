@@ -29,6 +29,7 @@ export default function Dashboard() {
   const [data, setData] = useState<Respuesta[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const [modalContent, setModalContent] = useState<{ titulo: string; texto: string } | null>(null);
 
   useEffect(() => {
     fetch('/api/dashboard-data')
@@ -70,9 +71,9 @@ export default function Dashboard() {
   const comparativaData = conteo('comparativaAsesores');
   const recomendacionData = conteo('recomendacion');
 
-  // ✅ CORREGIDO: agrupa las respuestas por día real, sumando cuántas
-  // llegaron cada fecha — antes cada respuesta se marcaba como "1"
-  // suelto, sin agrupar, dando una línea plana sin sentido.
+  // ✅ Agrupa las respuestas por día real, sumando cuántas llegaron
+  // cada fecha — antes cada respuesta se marcaba como "1" suelto,
+  // sin agrupar, dando una línea plana sin sentido.
   const conteoPorFecha: Record<string, number> = {};
   data.forEach(d => {
     const dia = format(new Date(d.fecha), 'dd/MM');
@@ -167,29 +168,71 @@ export default function Dashboard() {
 
         <div className="bg-white rounded-xl shadow p-6 mb-6">
           <h2 className="text-xl font-semibold mb-4">📝 Respuestas abiertas (Bloque 3)</h2>
+          <p className="text-xs text-gray-400 mb-3">Haz clic en cualquier respuesta para verla completa</p>
           <div className="overflow-x-auto">
             <table className="min-w-full divide-y divide-gray-200 text-sm">
               <thead className="bg-gray-50">
                 <tr>
                   <th className="px-4 py-2 text-left">Nombre</th>
-                  <th className="px-4 py-2 text-left">Obstáculo</th>
-                  <th className="px-4 py-2 text-left">Lo que más gustó</th>
-                  <th className="px-4 py-2 text-left">Mensaje a la Institución</th>
+                  <th className="px-4 py-2 text-left">P6 · Obstáculo en el aula</th>
+                  <th className="px-4 py-2 text-left">P8 · Lo que más gustó</th>
+                  <th className="px-4 py-2 text-left">P10 · Mensaje a la Institución</th>
                 </tr>
               </thead>
               <tbody className="divide-y divide-gray-200">
                 {data.slice().reverse().map((item) => (
                   <tr key={item.id}>
                     <td className="px-4 py-2 font-medium">{item.nombre || 'Anónimo'}</td>
-                    <td className="px-4 py-2 max-w-xs truncate">{item.obstaculoAula}</td>
-                    <td className="px-4 py-2 max-w-xs truncate">{item.loQueMasGusto}</td>
-                    <td className="px-4 py-2 max-w-xs truncate">{item.mensajeInstitucion}</td>
+                    <td
+                      className="px-4 py-2 max-w-xs truncate cursor-pointer hover:bg-blue-50"
+                      title={item.obstaculoAula}
+                      onClick={() => setModalContent({ titulo: `P6 · Obstáculo en el aula — ${item.nombre || 'Anónimo'}`, texto: item.obstaculoAula })}
+                    >
+                      {item.obstaculoAula}
+                    </td>
+                    <td
+                      className="px-4 py-2 max-w-xs truncate cursor-pointer hover:bg-blue-50"
+                      title={item.loQueMasGusto}
+                      onClick={() => setModalContent({ titulo: `P8 · Lo que más gustó — ${item.nombre || 'Anónimo'}`, texto: item.loQueMasGusto })}
+                    >
+                      {item.loQueMasGusto}
+                    </td>
+                    <td
+                      className="px-4 py-2 max-w-xs truncate cursor-pointer hover:bg-blue-50"
+                      title={item.mensajeInstitucion}
+                      onClick={() => setModalContent({ titulo: `P10 · Mensaje a la Institución — ${item.nombre || 'Anónimo'}`, texto: item.mensajeInstitucion })}
+                    >
+                      {item.mensajeInstitucion}
+                    </td>
                   </tr>
                 ))}
               </tbody>
             </table>
           </div>
         </div>
+
+        {modalContent && (
+          <div
+            className="fixed inset-0 bg-black/50 flex items-center justify-center p-4 z-50"
+            onClick={() => setModalContent(null)}
+          >
+            <div
+              className="bg-white rounded-xl shadow-xl max-w-2xl w-full max-h-[80vh] overflow-y-auto p-6"
+              onClick={(e) => e.stopPropagation()}
+            >
+              <div className="flex justify-between items-start mb-4">
+                <h3 className="text-lg font-semibold text-gray-800 pr-4">{modalContent.titulo}</h3>
+                <button
+                  onClick={() => setModalContent(null)}
+                  className="text-gray-400 hover:text-gray-600 text-xl leading-none"
+                >
+                  ✕
+                </button>
+              </div>
+              <p className="text-gray-700 whitespace-pre-wrap">{modalContent.texto}</p>
+            </div>
+          </div>
+        )}
 
         <div className="bg-white rounded-xl shadow p-6">
           <h2 className="text-xl font-semibold mb-4">📈 Respuestas en el tiempo</h2>
