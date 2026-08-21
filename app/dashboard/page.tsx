@@ -75,12 +75,11 @@ export default function Dashboard() {
   // ✅ CORREGIDO: Number(...) fuerza la conversión antes de sumar —
   // sin esto, JavaScript concatena texto en vez de sumar números,
   // produciendo promedios sin sentido.
-  const promedios = [
-    { name: 'Ritmo Aprendizaje', value: data.reduce((acc, d) => acc + Number(d.ritmoAprendizaje || 0), 0) / data.length },
-    { name: 'Brecha Andamiaje', value: data.reduce((acc, d) => acc + Number(d.brechaAndamiaje || 0), 0) / data.length },
-    { name: 'Criterios Decreto 1290', value: data.reduce((acc, d) => acc + Number(d.criteriosDecreto1290 || 0), 0) / data.length },
+   const promedios = [
+    { name: 'Ritmo Aprendizaje', value: Math.round((data.reduce((acc, d) => acc + Number(d.ritmoAprendizaje || 0), 0) / data.length) * 10) / 10 },
+    { name: 'Brecha Andamiaje', value: Math.round((data.reduce((acc, d) => acc + Number(d.brechaAndamiaje || 0), 0) / data.length) * 10) / 10 },
+    { name: 'Criterios Decreto 1290', value: Math.round((data.reduce((acc, d) => acc + Number(d.criteriosDecreto1290 || 0), 0) / data.length) * 10) / 10 },
   ];
-
   const liderazgoData = conteo('liderazgo');
   const requerimientosData = conteo('requerimientos');
   const comparativaData = conteo('comparativaAsesores');
