@@ -3,7 +3,7 @@ import { NextResponse } from 'next/server';
 export async function GET() {
   try {
     const response = await fetch('http://34.148.249.153:5000/dashboard-data', {
-      headers: { 'x-dashboard-token': 'encuesta-panel-2026-alau' },
+      headers: { 'x-dashboard-token': process.env.VM_TOKEN || '' },
       cache: 'no-store'
     });
     const data = await response.json();

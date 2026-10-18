@@ -6,7 +6,7 @@ export async function POST(request: Request) {
 
     const response = await fetch('http://34.148.249.153:5000/submit-encuesta', {
       method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
+      headers: { 'Content-Type': 'application/json', 'x-dashboard-token': process.env.VM_TOKEN || '' },
       body: JSON.stringify(body),
     });
 
