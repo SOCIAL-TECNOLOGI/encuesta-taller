@@ -3,7 +3,7 @@ import type { NextRequest } from 'next/server';
 
 export function middleware(request: NextRequest) {
   const url = request.nextUrl.pathname;
-  if (!url.startsWith('/dashboard')) return NextResponse.next();
+  if (!(url.startsWith("/dashboard") || url.startsWith("/api/dashboard-data"))) return NextResponse.next();
 
   const authHeader = request.headers.get('authorization');
   if (!authHeader) return new NextResponse('Auth required', { status: 401, headers: { 'WWW-Authenticate': 'Basic' } });
